@@ -109,6 +109,52 @@ One page shows up to 50 backups on the list.
 * ❻ Create manual backup files. 
 * ❼ Pagination is available when the current list is updated or if there are more than 50 backup files. 
 
+### Backing up to object storage
+
+The DB instance can be backed up and the backup file can be exported to the object storage.
+
+![DB Instance Details > Back Up To Object Storage](http://static.toastoven.net/prod_rds_mssql/20210209/output/db_instance_obs_backup_menu.png)
+
+After selecting a specific DB instance from the list, click the [Back up to object storage] button, which will then show the following popup:
+
+![DB Instance Details > Back Up To Object Storage](http://static.toastoven.net/prod_rds_mssql/20210209/output/db_instance_backup_to_obs_modal.png)
+
+* ❶ Enter the Tenant ID of the object storage where the backup file will be stored. This can be checked in the API endpoint settings in the object storage service web console.
+* ❷ Enter the TOAST account (e-mail) of the object storage where the backup will be stored.
+* ❸ Enter the API password of the object storage where the backup will be stored.
+* ❹ Enter the container name of the object storage where the backup will be stored.
+* ❺ Enter the file path of the backup file to be stored in the container.
+  * The folder name can be up to 255 bytes, and the full path up to 1024 bytes.
+  * Specific forms such as . or .. cannot be used and special characters (' " < > ; /) and spaces are not allowed.
+* ❻ Enter the name of the database to be backed up.
+* ❼ Select whether to use differential backup.
+
+Enter information and press [OK] to proceed with backup. Once backup completes, the backup file will be available for download from the entered object storage container.
+
+![Check backup file uploaded to object storage](http://static.toastoven.net/prod_rds_mssql/20210209/output/db_instance_backup_to_obs_result.png)
+
+### Recover from backup in object storage
+
+A backup file in object storage can be recovered to a DB instance.
+
+![DB Instance Details > Recover From Backup In Object Storage](http://static.toastoven.net/prod_rds_mssql/20210209/output/db_instance_obs_backup_menu.png)
+
+After selecting a specific DB instance from the list, click the [Recover from backup in object storage] button to show the following popup:
+
+![DB Instance Details > Recover From Backup In Object Storage Popup](http://static.toastoven.net/prod_rds_mssql/20210209/output/db_instance_backup_to_obs_modal.png)
+
+* ❶ Enter the Tenant ID of the object storage where the backup file will be stored. This can be checked in the API endpoint settings in the object storage service web console.
+* ❷ Enter the TOAST account (e-mail) of the object storage where the backup will be stored.
+* ❸ Enter the API password of the object storage where the backup will be stored.
+* ❹ Enter the container name of the object storage where the backup will be stored.
+* ❺ Enter the file path of the backup file to be stored in the container.
+  * The folder name can be up to 255 bytes, and the full path up to 1024 bytes.
+  * Specific forms such as . or .. cannot be used and special characters (' " < > ; /) and spaces are not allowed.
+* ❻ Enter the name of the database to be backed up.
+* ❼ Select whether to recover.
+
+Press [OK] after entering the information and the backup process begins.
+
 ## Backups
 
 On Backups, check out information on manual or auto backup files of all database instances. 
@@ -133,6 +179,25 @@ Select a database instance, enter name and click [Create] to execute backup.
 * ❶ Select a database instance to back up. Only currently available database instances show. 
 * ❷ Enter name of a backup. 
 * For more details, see [Backup and Restoration](./backup-restore).
+
+### Exporting backup to object storage
+
+An auto backup file or manual backup file can be exported to object storage.
+
+![Backup list 002](http://static.toastoven.net/prod_rds_mssql/20210209/output/backup_to_obs_menu.png)
+
+Select the backup to be sent to object storage from the list and click the [Export to object storage] button.
+
+![Backup List > Export Backup To Object Storage Popup](http://static.toastoven.net/prod_rds_mssql/20210209/output/backup_to_obs_modal.png)
+
+* ❶ Enter the Tenant ID of the object storage where the backup file will be stored. This can be checked in the API endpoint settings in the object storage service web console.
+* ❷ Enter the TOAST account (e-mail) of the object storage where the backup will be stored.
+* ❸ Enter the API password of the object storage where the backup will be stored.
+* ❹ Enter the container name of the object storage where the backup will be stored.
+* ❺ Enter the file path of the backup file to be stored in the container.
+  * The folder name can be up to 255 bytes, and the full path up to 1024 bytes.
+  * Specific forms such as . or .. cannot be used and special characters (' " < > ; /) and spaces are not allowed.
+* ❻ Enter the name of the database to be backed up.
 
 ## Restoration
 
