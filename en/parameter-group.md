@@ -1,56 +1,57 @@
-## Database > RDS for MS-SQL > 파라미터 그룹
+## Database > RDS for MS-SQL > Parameter Group
 
-## 파라미터 그룹
+## Parameter group
 
-DB 인스턴스에 설치된 Microsoft SQL Server의 설정을 적용하기 위해서 RDS for MS-SQL은 파라미터 그룹 기능을 제공합니다. 파라미터 그룹은 Microsoft SQL Server를 설정할 수 있는 파라미터의 집합입니다.
-RDS for MS-SQL은 서비스 활성화 시, 기본 파라미터 그룹인 `default.paramter-gruop`을 제공하며, 기본 파라미터 그룹은 삭제 및 변경이 불가능합니다.
-DB 인스턴스는 하나의 파라미터 그룹을 사용할 수 있으며, 여러 DB 인스턴스에서 동시에 사용 가능합니다.
+RDS for MS-SQL provides the parameter group feature to apply the settings from the Microsoft SQL Server installed in the DB instance. A parameter group is a set of parameters that sets up the Microsoft SQL Server.
+When the RDS for MS-SQL service is enabled, the basic parameter group “default.parameter-group” is provided. The basic parameter group cannot be deleted or changed.
+A DB instance can use one parameter group, and the parameter group can be used by multiple DB instances at once.
 
-### 파라미터 그룹 생성 및 삭제
+### Creating or deleting a parameter group
 
-파라미터 그룹은 기존 파라미터 그룹을 복사해 새로 생성할 수 있습니다. 복사된 파라미터 그룹은 원본 파라미터 그룹의 파라미터값만 복사할 뿐, 어떠한 연관도 없습니다.
-파라미터 그룹 삭제는 해당 파라미터 그룹을 사용 중인 DB 인스턴스가 없을 때만 가능하며, 사용 중인 DB 인스턴스가 존재하면 삭제할 수 없습니다.
+A new parameter group can be created by copying an existing parameter group. The copied parameter group only copies parameters from the original parameter group and does not have any association with it.
+The parameter group can be deleted only when no DB instance is using the parameter group; if there is a parameter group that is using it, it cannot be deleted.
 
-## 파라미터
+## Parameters
 
-파라미터는 아래와 같은 정보를 담고 있습니다.
+Parameters have the following information:
 
-* 이름
-    * 파라미터 이름을 나타냅니다.
-* 값
-    * 파라미터에 적용할 값입니다.
-* 허용된 값
-    * 파라미터에 적용할 수 있는 값의 범위입니다.
-* 수정 가능
-    * 파라미터의 수정 가능 여부입니다.
-* 적용 유형
-    * `고정`과 `동적`으로 구분됩니다.
-    * `고정`인 경우 파라미터 변경 사항을 적용하려면 DB 인스턴스를 재시작해야 합니다.
-    * `동적`인 경우 DB 인스턴스의 재시작 없이 바로 파라미터가 적용됩니다.
-* 데이터 형식
-    * 파라미터값의 형식을 나타냅니다.
+* Name
+  * Parameter name.
+* Value
+  * The value to be applied to the parameter.
+* Permitted values
+  * A range of values that can be applied to the parameter.
+* Modifiable
+  * Determines whether parameter can be modified.
+* Applied type
+  * Either “static” or “dynamic.”
+  * If set to “Static,” the DB instance must be restarted to apply changes to the parameter.
+  * If set to “Dynamic,” the parameter is applied immediately without DB instance restart.
+* Data type
+  * The type of the parameter value.
 
-### 파라미터 변수, 수식 및 함수
+### Parameter variables, formulas, and functions
 
-특정 파라미터(예를 들어 `max server memory (mb)`)들은 고정된 값을 사용하기보다는 DB 인스턴스와 연관된 값들을 이용한 수식으로 표현하는 것이 더 좋을 수 있습니다. 이를 지원하기 위해 `numeric` 데이터 형식에 대해서는 미리 정의된 변수, 수식 및 함수를 사용할 수 있습니다.
+Certain parameters (e.g. “max server memory (mb)”) are better expressed as formulas that use values associated with the DB instance rather than static values. To support this, predefined variables, formulas, and functions can be used for the “numeric” data type.
 
-* 수식
-  * `()`, `+`, `-`, `*`, `/`를 사용할 수 있습니다. 
-  * 수식의 결과는 항상 정수여야 하며, 소수점은 버림 처리합니다.
-* 함수
-  * `max(a, b, ...)`:여러 개의 값 중 가장 큰 값을 반환합니다.
-  * `min(a, b, ...)`:여러 개의 값 중 가장 작은 값을 반환합니다.
-* 변수
-  * `ramSizeByte`:현재 DB 인스턴스 타입의 메모리 크기의 바이트값을 나타냅니다.
-  * `storageSizeByte`:현재 DB 인스턴스 스토리지 크기의 바이트값을 나타냅니다.
+* Formulas
+  * “()”, “+”, “-”, “*”, “/” can be used. 
+  * The result of a formula must always be an integer, and decimal places are discarded.
+* Functions
+  * `max(a, b, ...)`: returns the largest in the array.
+  * `min(a, b, ...)`: returns the smallest in the array.
+* Variables
+  * “ramSizeByte”: memory size of the current DB instance type (in bytes).
+  * “storageSizeByte”: DB instance storage size (in bytes).
 
-아래 예제는 `max server memory (mb)`파라미터의 기본값이며, DB 인스턴스 타입의 메모리 크기의 3/4 크기로 설정하는 것을 나타냅니다.
+The below example is the default value of the “max server memory (mb)” parameter, and shows selecting 3/4 the memory size of the DB instance type:
+
 ```
 ramSizeByte * 3 / 4 / 1048576
 ```
 
-### 파라미터 변경
+### Changing parameters
 
-사용자가 생성한 파라미터 그룹만 파라미터 변경이 가능하며, 파라미터 그룹은 기존 파라미터 그룹을 복사해 새로 생성할 수 있습니다.
-파라미터 그룹 안의 파라미터 변경 시, 파라미터 그룹을 사용하는 모든 DB 인스턴스에 동시에 적용됩니다. 만약 파라미터 변경 시, 해당 파라미터 그룹을 사용하는 DB 인스턴스 중 어느 하나라도 다른 작업을 진행 중이면 파라미터 변경은 불가능합니다.
-변경한 파라미터의 적용 유형이 `고정`인 경우 DB 인스턴스가 재시작됩니다.
+Only a parameter group created by users can be changed, and new one can be created by copying one from the existing parameter groups.
+If parameters inside a parameter group are changed, the changes are applied simultaneously to all DB instances that are using the parameter group. If any of the DB instances using the parameter group is in the middle of processing some other tasks, the parameter won't be changed.
+If the applied type of the changed parameter is “Static,” the DB instance will restart.
