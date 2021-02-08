@@ -37,6 +37,7 @@ To create a database instance, an appropriate type must be selected depending on
 | m2 | Configures balance between CPU and memory.   |
 | c2 | Has higher performance setting for CPU. |
 | r2 | Available when momory takes more volume than other reources|
+| x1 | A type that supports high performance CPUs and memory. Used for services and applications that require high performance. |
 
 It is easy to change the type of already-created database instance via web console.
 
